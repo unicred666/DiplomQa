@@ -95,4 +95,6 @@
     
 ## Документация:
 
+* [Задание](https://github.com/netology-code/qa-diploma)
 * [План автоматизации](https://github.com/unicred666/DiplomQa/blob/main/Documents/Plan.md)
+
