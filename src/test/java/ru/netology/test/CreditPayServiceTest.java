@@ -156,7 +156,7 @@ public class CreditPayServiceTest {
 
     @Test
         //Попытка покупки тура в кредит с нулевым номер карты.
-    void creditNegativeNumberCard00Symbols() {
+    void creditNegativeNumberCard0Symbols() {
         CreditPage creditPage = startPage.creditPage();
         var cardInfo = DataHelper.getNumberCard00Symbols();
         creditPage.insertCardData(cardInfo);
