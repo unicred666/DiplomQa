@@ -16,7 +16,6 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrderCardPageTest {
-    public static String url = System.getProperty("sut.url");
     StartPage startPage = open("http://localhost:8080/", StartPage.class);
 
     @BeforeAll
@@ -37,9 +36,8 @@ public class OrderCardPageTest {
     @Test
         //Покупка тура при помощи карты № "4444 4444 4444 4441" и вводе валидных данных.
     void buyPositiveAllFieldValidApproved() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();//уже возвращенный объект orderCardPage
         var cardInfo = DataHelper.getApprovedCard();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationApproved();
         assertEquals("APPROVED", SQLHelper.getPaymentStatus());
@@ -48,9 +46,8 @@ public class OrderCardPageTest {
     @Test
         //Покупка тура при помощи карты № "4444 4444 4444 4442" и вводе валидных данных.
     void buyPositiveAllFieldValidDeclined() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getDeclinedCard();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationFailure();
         assertEquals("DECLINED", SQLHelper.getPaymentStatus());
@@ -59,9 +56,8 @@ public class OrderCardPageTest {
     @Test
         //Покупка тура при помощи карты с номером отличным от предоставленных и вводом валидных данных.
     void buyNegativeCardNotInDatabase() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardNotInDatabase();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationFailure();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -70,9 +66,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с незаполненной формой.
     void buyNegativeAllFieldEmpty() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getEmptyCard();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat4Fields();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -81,9 +76,8 @@ public class OrderCardPageTest {
     @Test
         //Отправка формы покупки тура, заполненной валидными данными, кроме месяца действия карты.
     void buyNegativeMonthThisYear() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardMonthThisYear();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationExpirationDateError();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -92,9 +86,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с невалидным номером карты.
     void buyNegativeNumberCard13Symbols() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getNumberCard13Symbols();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -103,9 +96,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с невалидным месяцом выпуска карты
     void buyNegativeMonthOver12() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardMonthOver12();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationExpirationDateError();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -114,9 +106,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с истекшим сроком "годности" действия карты.
     void buyNegativeYearUnderThisYear() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardYearUnderThisYear();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationExpiredError();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -125,9 +116,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с невалидным именем владельца карты.
     void buyNegativeOwnerCirillic() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardHolderCirillic();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -136,9 +126,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с невалидным именем владельца карты в виде цифр.
     void buyNegativeOwnerNumeric() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardHolderNumeric();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -147,9 +136,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с невалидным именем владельца карты в виде спецсимволов.
     void buyNegativeOwnerSpecialSymbols() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardSpecialSymbols();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -158,9 +146,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с невалидным cvc/cvv:
     void buyNegativeCvv1Symbol() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardCvv1Symbol();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -168,10 +155,9 @@ public class OrderCardPageTest {
 
     @Test
         //Попытка оплаты с нулевым номер карты:
-    void buyNegativeNumberCard00Symbols() {
-        startPage.orderCardPage();
+    void buyNegativeNumberCard15Symbols() {
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getNumberCard00Symbols();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -180,9 +166,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с нулевым месяцом карты:
     void buyNegativeMonth00ThisYear() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardMonth00ThisYear();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationExpirationDateError();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -191,9 +176,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с нулевым годом:
     void buyNegativeYear00() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardYear00();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationExpiredError();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -202,9 +186,8 @@ public class OrderCardPageTest {
     @Test
         // Попытка оплаты с нулевым CVC/CVV кодом:
     void buyNegativeCvv0Symbols() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardCvv0Symbols();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -213,9 +196,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с незаполненным номером карты:
     void buyNegativeCardNullSymbol() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getNumberCardNullSymbol();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationFailure();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -224,9 +206,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с незаполненным полем год:
     void buyNegativeYearClear() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardYearClear();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationExpiredError();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -235,9 +216,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с незаполненным полем CVC/CVV код:
     void buyNegativeCvvClearSymbols() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardCvvClaerSymbols();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());
@@ -246,9 +226,8 @@ public class OrderCardPageTest {
     @Test
         //Попытка оплаты с незаполненным полем владелец карты:
     void buyNegativeOwnerClear() {
-        startPage.orderCardPage();
+        OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getCardHolderClear();
-        var orderCardPage = new OrderCardPage();
         orderCardPage.insertCardData(cardInfo);
         orderCardPage.waitNotificationWrongFormat();
         assertEquals("0", SQLHelper.getOrderCount());

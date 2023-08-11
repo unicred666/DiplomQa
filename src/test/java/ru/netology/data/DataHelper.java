@@ -10,11 +10,21 @@ import java.util.Locale;
 public class DataHelper {
 
     public static CardInfo getApprovedCard() {
-        return new CardInfo("4444444444444441", "08", "25", "IVANOV IVAN", "123");
+        Faker faker = new Faker();
+        String holder = faker.name().firstName() + " " + faker.name().lastName();
+        String month = getShiftedMonth();
+        String year = getShiftedYear(1);
+        String cvv = faker.number().digits(3);
+        return new CardInfo("4444444444444441", month, year, holder, cvv);
     }
 
     public static CardInfo getDeclinedCard() {
-        return new CardInfo("4444444444444442", "08", "25", "IVANOV IVAN", "123");
+        Faker faker = new Faker();
+        String holder = faker.name().firstName() + " " + faker.name().lastName();
+        String month = getShiftedMonth();
+        String year = getShiftedYear(1);
+        String cvv = faker.number().digits(3);
+        return new CardInfo("4444444444444442",month, year, holder, cvv);
     }
 
     public static CardInfo getEmptyCard() {
