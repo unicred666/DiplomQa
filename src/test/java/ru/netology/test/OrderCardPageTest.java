@@ -155,7 +155,7 @@ public class OrderCardPageTest {
 
     @Test
         //Попытка оплаты с нулевым номер карты:
-    void buyNegativeNumberCard15Symbols() {
+    void buyNegativeNumberCard00Symbols() {
         OrderCardPage orderCardPage = startPage.orderCardPage();
         var cardInfo = DataHelper.getNumberCard00Symbols();
         orderCardPage.insertCardData(cardInfo);
