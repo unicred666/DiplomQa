@@ -29,7 +29,7 @@ CreditPayServiceTest
 ![](pic/6.jpg)
 OrderCardPageTest
 ![](pic/7.jpg)
-В результате прогона тестов было составлено @@ issue.
+В результате прогона тестов было составлено 8 issue.
 
 ## Общие рекомендации
 
